@@ -1,4 +1,4 @@
-PROTO_DIR=.
+PROTO_DIR=proto
 GO_OUT_DIR=generated
 PROTO_FILES=$(wildcard $(PROTO_DIR)/*.proto)
 

@@ -11,6 +11,9 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	_ "github.com/lib/pq"
+
+	pb "split-pay/generated"
+	"split-pay/services"
 )
 
 func main() {
@@ -26,6 +29,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
+	pb.RegisterSplitPayAppServiceServer(s, &services.AppService{DB: db})
 
 	reflection.Register(s)
 
