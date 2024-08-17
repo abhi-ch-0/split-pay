@@ -7,9 +7,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	pb "split-pay/generated"
-	"split-pay/services"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
@@ -29,7 +26,6 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	pb.RegisterGreeterServer(s, &services.GreeterService{})
 
 	reflection.Register(s)
 
