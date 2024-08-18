@@ -2,8 +2,10 @@ package services
 
 import (
 	"context"
+	"os"
 	pb "split-pay/generated"
 
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -38,7 +40,6 @@ func (s *AppService) SignUp(ctx context.Context, req *pb.SignUpRequest) (*pb.Sig
 		RETURNING id`,
 		req.Username, string(hashedPassword),
 	).Scan(&userId)
-
 	if err != nil {
 		return &pb.SignUpResponse{
 			StatusCode: 500,
@@ -46,12 +47,21 @@ func (s *AppService) SignUp(ctx context.Context, req *pb.SignUpRequest) (*pb.Sig
 		}, err
 	}
 
-	token := "generated-jwt-token"
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user_id": userId,
+	})
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
+	if err != nil {
+		return &pb.SignUpResponse{
+			StatusCode: 500,
+			Message:    "Error while creating token",
+		}, err
+	}
 
 	return &pb.SignUpResponse{
 		StatusCode: 200,
 		UserId:     userId,
-		Token:      token,
+		Token:      tokenString,
 		Message:    "User created successfully",
 	}, nil
 }
