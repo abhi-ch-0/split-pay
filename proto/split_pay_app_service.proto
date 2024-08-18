@@ -1,9 +1,11 @@
 syntax = "proto3";
 
 import "sign_up.proto";
+import "log_in.proto";
 
 option go_package = "my-grpc-app/generated;pb";
 
 service SplitPayAppService {
   rpc SignUp(SignUpRequest) returns (SignUpResponse);
+  rpc LogIn(LogInRequest) returns (LogInResponse);
 }
