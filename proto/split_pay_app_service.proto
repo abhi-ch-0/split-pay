@@ -1,11 +1,104 @@
 syntax = "proto3";
 
-import "sign_up.proto";
-import "log_in.proto";
+import "google/protobuf/empty.proto";
 
 option go_package = "my-grpc-app/generated;pb";
 
 service SplitPayAppService {
   rpc SignUp(SignUpRequest) returns (SignUpResponse);
   rpc LogIn(LogInRequest) returns (LogInResponse);
+  rpc GetSetupStatus(google.protobuf.Empty) returns (GetSetupStatusResponse);
+  rpc SetDisplayName(SetDisplayNameRequest) returns (SetDisplayNameResponse);
+  rpc AddPhoneNumber(AddPhoneNumberRequest) returns (AddPhoneNumberResponse);
+  rpc RemovePhoneNumber(RemovePhoneNumberRequest) returns (RemovePhoneNumberResponse);
+  rpc FetchPhoneNumbers(google.protobuf.Empty) returns (FetchPhoneNumbersResponse);
+  rpc AddEmail(AddEmailRequest) returns (AddEmailResponse);
+  rpc RemoveEmail(RemoveEmailRequest) returns (RemoveEmailResponse);
+  rpc FetchEmails(google.protobuf.Empty) returns (FetchEmailsResponse);
+}
+
+message SignUpRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message SignUpResponse {
+  int32 status_code = 1;
+  string user_id = 2;
+  string token = 3;
+  string message = 4;
+}
+
+message LogInRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LogInResponse {
+  int32 status_code = 1;
+  string user_id = 2;
+  string token = 3;
+  string message = 4;
+}
+
+message GetSetupStatusResponse {
+  bool is_setup_completed = 1;
+}
+
+message SetDisplayNameRequest {
+  string display_name = 1;
+}
+
+message SetDisplayNameResponse {
+  bool success = 1;
+}
+
+message PhoneNumber {
+  string contact = 1;
+  bool is_searchable = 2;
+}
+
+message AddPhoneNumberRequest {
+  PhoneNumber phone_number = 1;
+}
+
+message AddPhoneNumberResponse {
+  bool success = 1;
+}
+
+message RemovePhoneNumberRequest {
+  string phone_number = 1;
+}
+
+message RemovePhoneNumberResponse {
+  bool success = 1;
+}
+
+message FetchPhoneNumbersResponse {
+  repeated PhoneNumber phone_numbers = 1;
+}
+
+message Email {
+  string address = 1;
+  bool is_searchable = 2;
+}
+
+message AddEmailRequest {
+  Email email = 1;
+}
+
+message AddEmailResponse {
+  bool success = 1;
+}
+
+message RemoveEmailRequest {
+  string email = 1;
+}
+
+message RemoveEmailResponse {
+  bool success = 1;
+}
+
+message FetchEmailsResponse {
+  repeated Email emails = 1;
 }

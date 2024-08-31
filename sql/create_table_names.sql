@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS users_display_name (
+    user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    display_name VARCHAR(50) UNIQUE NOT NULL
+)
