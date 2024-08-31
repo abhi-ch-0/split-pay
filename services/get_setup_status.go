@@ -5,9 +5,11 @@ import (
 	"fmt"
 	pb "split-pay/generated"
 	"split-pay/shared"
+
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *AppService) GetSetupStatus(ctx context.Context) (*pb.GetSetupStatusResponse, error) {
+func (s *AppService) GetSetupStatus(ctx context.Context, _ *emptypb.Empty) (*pb.GetSetupStatusResponse, error) {
 	userId, err := shared.GetUserIdFromToken(ctx)
 	if err != nil {
 		return nil, err
