@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *AppService) RemovePhoneNumber(ctx context.Context, req *pb.RemovePhoneNumberRequest) (*pb.RemovePhoneNumberResponse, error) {
+func (s *AppService) RemovePhoneNumber(ctx context.Context, req *pb.RemovePhoneNumberInput) (*pb.RemovePhoneNumberOutput, error) {
 	userId, err := shared.GetUserIdFromToken(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "authentication failed: %v", err)
@@ -26,5 +26,5 @@ func (s *AppService) RemovePhoneNumber(ctx context.Context, req *pb.RemovePhoneN
 		return nil, status.Errorf(codes.NotFound, "failed to delete phone number: %v", err)
 	}
 
-	return &pb.RemovePhoneNumberResponse{Success: true}, nil
+	return &pb.RemovePhoneNumberOutput{Success: true}, nil
 }

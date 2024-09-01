@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *AppService) FetchEmails(ctx context.Context, _ *emptypb.Empty) (*pb.FetchEmailsResponse, error) {
+func (s *AppService) FetchEmails(ctx context.Context, _ *emptypb.Empty) (*pb.FetchEmailsOutput, error) {
 	userId, err := shared.GetUserIdFromToken(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "authentication failed: %v", err)
@@ -32,5 +32,5 @@ func (s *AppService) FetchEmails(ctx context.Context, _ *emptypb.Empty) (*pb.Fet
 		emails = append(emails, &email)
 	}
 
-	return &pb.FetchEmailsResponse{Emails: emails}, nil
+	return &pb.FetchEmailsOutput{Emails: emails}, nil
 }

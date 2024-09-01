@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *AppService) RemoveEmail(ctx context.Context, req *pb.RemoveEmailRequest) (*pb.RemoveEmailResponse, error) {
+func (s *AppService) RemoveEmail(ctx context.Context, req *pb.RemoveEmailInput) (*pb.RemoveEmailOutput, error) {
 	userId, err := shared.GetUserIdFromToken(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "authentication failed: %v", err)
@@ -26,5 +26,5 @@ func (s *AppService) RemoveEmail(ctx context.Context, req *pb.RemoveEmailRequest
 		return nil, status.Error(codes.InvalidArgument, "Email not found")
 	}
 
-	return &pb.RemoveEmailResponse{Success: true}, nil
+	return &pb.RemoveEmailOutput{Success: true}, nil
 }

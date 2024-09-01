@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *AppService) AddPhoneNumber(ctx context.Context, req *pb.AddPhoneNumberRequest) (*pb.AddPhoneNumberResponse, error) {
+func (s *AppService) AddPhoneNumber(ctx context.Context, req *pb.AddPhoneNumberInput) (*pb.AddPhoneNumberOutput, error) {
 	userId, err := shared.GetUserIdFromToken(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "authentication failed: %v", err)
@@ -32,7 +32,7 @@ func (s *AppService) AddPhoneNumber(ctx context.Context, req *pb.AddPhoneNumberR
 		return nil, status.Errorf(codes.Internal, "failed to set phone number: %v", err)
 	}
 
-	return &pb.AddPhoneNumberResponse{
+	return &pb.AddPhoneNumberOutput{
 		Success: true,
 	}, nil
 }

@@ -5,51 +5,51 @@ import "google/protobuf/empty.proto";
 option go_package = "my-grpc-app/generated;pb";
 
 service SplitPayAppService {
-  rpc SignUp(SignUpRequest) returns (SignUpResponse);
-  rpc LogIn(LogInRequest) returns (LogInResponse);
-  rpc GetSetupStatus(google.protobuf.Empty) returns (GetSetupStatusResponse);
-  rpc SetDisplayName(SetDisplayNameRequest) returns (SetDisplayNameResponse);
-  rpc AddPhoneNumber(AddPhoneNumberRequest) returns (AddPhoneNumberResponse);
-  rpc RemovePhoneNumber(RemovePhoneNumberRequest) returns (RemovePhoneNumberResponse);
-  rpc FetchPhoneNumbers(google.protobuf.Empty) returns (FetchPhoneNumbersResponse);
-  rpc AddEmail(AddEmailRequest) returns (AddEmailResponse);
-  rpc RemoveEmail(RemoveEmailRequest) returns (RemoveEmailResponse);
-  rpc FetchEmails(google.protobuf.Empty) returns (FetchEmailsResponse);
+  rpc SignUp(SignUpInput) returns (SignUpOutput);
+  rpc LogIn(LogInInput) returns (LogInOutput);
+  rpc GetSetupStatus(google.protobuf.Empty) returns (GetSetupStatusOutput);
+  rpc SetDisplayName(SetDisplayNameInput) returns (SetDisplayNameOutput);
+  rpc AddPhoneNumber(AddPhoneNumberInput) returns (AddPhoneNumberOutput);
+  rpc RemovePhoneNumber(RemovePhoneNumberInput) returns (RemovePhoneNumberOutput);
+  rpc FetchPhoneNumbers(google.protobuf.Empty) returns (FetchPhoneNumbersOutput);
+  rpc AddEmail(AddEmailInput) returns (AddEmailOutput);
+  rpc RemoveEmail(RemoveEmailInput) returns (RemoveEmailOutput);
+  rpc FetchEmails(google.protobuf.Empty) returns (FetchEmailsOutput);
 }
 
-message SignUpRequest {
+message SignUpInput {
   string username = 1;
   string password = 2;
 }
 
-message SignUpResponse {
+message SignUpOutput {
   int32 status_code = 1;
   string user_id = 2;
   string token = 3;
   string message = 4;
 }
 
-message LogInRequest {
+message LogInInput {
   string username = 1;
   string password = 2;
 }
 
-message LogInResponse {
+message LogInOutput {
   int32 status_code = 1;
   string user_id = 2;
   string token = 3;
   string message = 4;
 }
 
-message GetSetupStatusResponse {
+message GetSetupStatusOutput {
   bool is_setup_completed = 1;
 }
 
-message SetDisplayNameRequest {
+message SetDisplayNameInput {
   string display_name = 1;
 }
 
-message SetDisplayNameResponse {
+message SetDisplayNameOutput {
   bool success = 1;
 }
 
@@ -58,23 +58,23 @@ message PhoneNumber {
   bool is_searchable = 2;
 }
 
-message AddPhoneNumberRequest {
+message AddPhoneNumberInput {
   PhoneNumber phone_number = 1;
 }
 
-message AddPhoneNumberResponse {
+message AddPhoneNumberOutput {
   bool success = 1;
 }
 
-message RemovePhoneNumberRequest {
+message RemovePhoneNumberInput {
   string phone_number = 1;
 }
 
-message RemovePhoneNumberResponse {
+message RemovePhoneNumberOutput {
   bool success = 1;
 }
 
-message FetchPhoneNumbersResponse {
+message FetchPhoneNumbersOutput {
   repeated PhoneNumber phone_numbers = 1;
 }
 
@@ -83,22 +83,22 @@ message Email {
   bool is_searchable = 2;
 }
 
-message AddEmailRequest {
+message AddEmailInput {
   Email email = 1;
 }
 
-message AddEmailResponse {
+message AddEmailOutput {
   bool success = 1;
 }
 
-message RemoveEmailRequest {
+message RemoveEmailInput {
   string email = 1;
 }
 
-message RemoveEmailResponse {
+message RemoveEmailOutput {
   bool success = 1;
 }
 
-message FetchEmailsResponse {
+message FetchEmailsOutput {
   repeated Email emails = 1;
 }

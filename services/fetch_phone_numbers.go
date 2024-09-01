@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *AppService) FetchPhoneNumbers(ctx context.Context, _ *emptypb.Empty) (*pb.FetchPhoneNumbersResponse, error) {
+func (s *AppService) FetchPhoneNumbers(ctx context.Context, _ *emptypb.Empty) (*pb.FetchPhoneNumbersOutput, error) {
 	userId, err := shared.GetUserIdFromToken(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "authentication failed: %v", err)
@@ -32,5 +32,5 @@ func (s *AppService) FetchPhoneNumbers(ctx context.Context, _ *emptypb.Empty) (*
 		phoneNumbers = append(phoneNumbers, &phone)
 	}
 
-	return &pb.FetchPhoneNumbersResponse{PhoneNumbers: phoneNumbers}, nil
+	return &pb.FetchPhoneNumbersOutput{PhoneNumbers: phoneNumbers}, nil
 }

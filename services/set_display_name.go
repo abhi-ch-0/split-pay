@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *AppService) SetDisplayName(ctx context.Context, req *pb.SetDisplayNameRequest) (*pb.SetDisplayNameResponse, error) {
+func (s *AppService) SetDisplayName(ctx context.Context, req *pb.SetDisplayNameInput) (*pb.SetDisplayNameOutput, error) {
 	userId, err := shared.GetUserIdFromToken(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "authentication failed: %v", err)
@@ -30,7 +30,7 @@ func (s *AppService) SetDisplayName(ctx context.Context, req *pb.SetDisplayNameR
 		return nil, status.Errorf(codes.Internal, "failed to set display name: %v", err)
 	}
 
-	return &pb.SetDisplayNameResponse{
+	return &pb.SetDisplayNameOutput{
 		Success: true,
 	}, nil
 }

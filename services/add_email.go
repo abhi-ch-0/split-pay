@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *AppService) AddEmail(ctx context.Context, req *pb.AddEmailRequest) (*pb.AddEmailResponse, error) {
+func (s *AppService) AddEmail(ctx context.Context, req *pb.AddEmailInput) (*pb.AddEmailOutput, error) {
 	userId, err := shared.GetUserIdFromToken(ctx)
 	if err != nil {
 		return nil, status.Errorf(codes.Unauthenticated, "authentication failed: %v", err)
@@ -21,5 +21,5 @@ func (s *AppService) AddEmail(ctx context.Context, req *pb.AddEmailRequest) (*pb
 		return nil, err
 	}
 
-	return &pb.AddEmailResponse{Success: true}, nil
+	return &pb.AddEmailOutput{Success: true}, nil
 }

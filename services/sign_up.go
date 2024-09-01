@@ -9,17 +9,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *AppService) SignUp(ctx context.Context, req *pb.SignUpRequest) (*pb.SignUpResponse, error) {
+func (s *AppService) SignUp(ctx context.Context, req *pb.SignUpInput) (*pb.SignUpOutput, error) {
 	var doesUsernameExist bool
 	err := s.DB.QueryRowContext(ctx, "SELECT EXISTS(SELECT 1 FROM users WHERE username = $1)", req.Username).Scan(&doesUsernameExist)
 	if err != nil {
-		return &pb.SignUpResponse{
+		return &pb.SignUpOutput{
 			StatusCode: 500,
 			Message:    "Internal server error",
 		}, err
 	}
 	if doesUsernameExist {
-		return &pb.SignUpResponse{
+		return &pb.SignUpOutput{
 			StatusCode: 400,
 			Message:    "Username already exists",
 		}, nil
@@ -27,7 +27,7 @@ func (s *AppService) SignUp(ctx context.Context, req *pb.SignUpRequest) (*pb.Sig
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return &pb.SignUpResponse{
+		return &pb.SignUpOutput{
 			StatusCode: 500,
 			Message:    "Error while hashing password",
 		}, err
@@ -41,7 +41,7 @@ func (s *AppService) SignUp(ctx context.Context, req *pb.SignUpRequest) (*pb.Sig
 		req.Username, string(hashedPassword),
 	).Scan(&userId)
 	if err != nil {
-		return &pb.SignUpResponse{
+		return &pb.SignUpOutput{
 			StatusCode: 500,
 			Message:    "Error while creating user",
 		}, err
@@ -52,13 +52,13 @@ func (s *AppService) SignUp(ctx context.Context, req *pb.SignUpRequest) (*pb.Sig
 	})
 	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
 	if err != nil {
-		return &pb.SignUpResponse{
+		return &pb.SignUpOutput{
 			StatusCode: 500,
 			Message:    "Error while creating token",
 		}, err
 	}
 
-	return &pb.SignUpResponse{
+	return &pb.SignUpOutput{
 		StatusCode: 200,
 		UserId:     userId,
 		Token:      tokenString,

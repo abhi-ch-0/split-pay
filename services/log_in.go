@@ -10,18 +10,18 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *AppService) LogIn(ctx context.Context, req *pb.LogInRequest) (*pb.LogInResponse, error) {
+func (s *AppService) LogIn(ctx context.Context, req *pb.LogInInput) (*pb.LogInOutput, error) {
 	var userId string
 	var storedHashedPassword string
 	err := s.DB.QueryRowContext(ctx, "SELECT id, password_hash FROM users WHERE username = $1", req.Username).Scan(&userId, &storedHashedPassword)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return &pb.LogInResponse{
+			return &pb.LogInOutput{
 				StatusCode: 401,
 				Message:    "Invalid username",
 			}, nil
 		}
-		return &pb.LogInResponse{
+		return &pb.LogInOutput{
 			StatusCode: 500,
 			Message:    "Internal server error",
 		}, err
@@ -29,7 +29,7 @@ func (s *AppService) LogIn(ctx context.Context, req *pb.LogInRequest) (*pb.LogIn
 
 	err = bcrypt.CompareHashAndPassword([]byte(storedHashedPassword), []byte(req.Password))
 	if err != nil {
-		return &pb.LogInResponse{
+		return &pb.LogInOutput{
 			StatusCode: 401,
 			Message:    "Invalid password",
 		}, nil
@@ -40,13 +40,13 @@ func (s *AppService) LogIn(ctx context.Context, req *pb.LogInRequest) (*pb.LogIn
 	})
 	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
 	if err != nil {
-		return &pb.LogInResponse{
+		return &pb.LogInOutput{
 			StatusCode: 500,
 			Message:    "Error while creating token",
 		}, err
 	}
 
-	return &pb.LogInResponse{
+	return &pb.LogInOutput{
 		StatusCode: 200,
 		UserId:     userId,
 		Token:      tokenString,

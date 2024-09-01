@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *AppService) GetSetupStatus(ctx context.Context, _ *emptypb.Empty) (*pb.GetSetupStatusResponse, error) {
+func (s *AppService) GetSetupStatus(ctx context.Context, _ *emptypb.Empty) (*pb.GetSetupStatusOutput, error) {
 	userId, err := shared.GetUserIdFromToken(ctx)
 	if err != nil {
 		return nil, err
@@ -21,7 +21,7 @@ func (s *AppService) GetSetupStatus(ctx context.Context, _ *emptypb.Empty) (*pb.
 		return nil, fmt.Errorf("failed to check display name: %v", err)
 	}
 
-	return &pb.GetSetupStatusResponse{
+	return &pb.GetSetupStatusOutput{
 		IsSetupCompleted: hasDisplayName,
 	}, nil
 }
