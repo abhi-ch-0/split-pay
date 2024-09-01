@@ -15,6 +15,11 @@ service SplitPayAppService {
   rpc AddEmail(AddEmailInput) returns (AddEmailOutput);
   rpc RemoveEmail(RemoveEmailInput) returns (RemoveEmailOutput);
   rpc FetchEmails(google.protobuf.Empty) returns (FetchEmailsOutput);
+  rpc SendFriendRequest(SendFriendRequestInput) returns (SendFriendRequestOutput);
+  rpc FetchPendingFriendRequests(google.protobuf.Empty) returns (FetchPendingFriendRequestsOutput);
+  rpc ApproveFriendRequest(ApproveFriendRequestInput) returns (ApproveFriendRequestOutput);
+  rpc DeclineFriendRequest(DeclineFriendRequestInput) returns (DeclineFriendRequestOutput);
+  rpc FetchFriends(google.protobuf.Empty) returns (FetchFriendsOutput);
 }
 
 message SignUpInput {
@@ -101,4 +106,48 @@ message RemoveEmailOutput {
 
 message FetchEmailsOutput {
   repeated Email emails = 1;
+}
+
+message SendFriendRequestInput {
+  string recipient_id = 1;
+}
+
+message SendFriendRequestOutput {
+  bool success = 1;
+}
+
+message PendingFriendRequest {
+  string from_user_id = 1;
+  string from_username = 2;
+  string display_name = 3;
+}
+
+message FetchPendingFriendRequestsOutput {
+  repeated PendingFriendRequest pending_friend_requests = 1;
+}
+
+message ApproveFriendRequestInput {
+  string from_user_id = 1;
+}
+
+message ApproveFriendRequestOutput {
+  bool success = 1;
+}
+
+message DeclineFriendRequestInput {
+  string from_user_id = 1;
+}
+
+message DeclineFriendRequestOutput {
+  bool success = 1;
+}
+
+message Friend {
+  string user_id = 1;
+  string username = 2;
+  string display_name = 3;
+}
+
+message FetchFriendsOutput {
+  repeated Friend friends = 1;
 }
